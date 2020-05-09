@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title> Examinations </title>
+</head>
+<body>
+    <div class="row">
+        <div class="col-sm-9">
+
+        </div>
+        <div class="col-sm-3">
+            <button type="button" class="btn btn-primary" routerLinkActive="active" routerLink="/pages/new-exam">
+                <svg class="bi bi-plus" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M8 3.5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5H4a.5.5 0 010-1h3.5V4a.5.5 0 01.5-.5z" clip-rule="evenodd"/>
+                    <path fill-rule="evenodd" d="M7.5 8a.5.5 0 01.5-.5h4a.5.5 0 010 1H8.5V12a.5.5 0 01-1 0V8z" clip-rule="evenodd"/>
+                  </svg>
+                  New Examination
+            </button>
+        </div>
+    </div>
+
+   <!-- <div class="row">
+        <div class="col-sm-3">
+            <ul class="list-group">
+                <li class="list-group-item" [class.active]="active === i" 
+                        (click)="onClick(i)" *ngFor="let s of examList; let i = index;" [value]="s">
+                  {{s}}
+                  <i class="fa fa-chevron-right"></i>
+                </li>
+            </ul>
+        </div> 
+        
+    </div>
+     <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3 rounded">
+        <div class="container">
+          <!-- <a class="navbar-brand" href="#" style="color:blue">R L Jalappa Institute of Technology</a>
+      
+          <ul class="nav nav-pills">
+            <li class="nav-item">
+              <a class="nav-link" routerLinkActive="active" routerLink="/contact">Upcoming</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLinkActive="active" routerLink="/contact">InProgress</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLinkActive="active" routerLink="/pages/exams">Completed</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLinkActive="active" routerLink="/contact">Evaluation In Progress</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLinkActive="active" routerLink="/contact">Evaluation Completed</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLinkActive="active" routerLink="/contact">Evaluation Published</a>
+            </li>
+          </ul>
+        </div>
+      </nav> -->
+
+    <div class="row" style="padding-top: 20px;">
+        <div class="col-sm-2">
+        </div>
+        <div class="col-sm-3">
+            <button class="examBox" routerLinkActive="active" routerLink="/pages/upcoming-exams">Upcoming</button>
+        </div>
+
+        <div class="col-sm-3">
+            <button class="examBox" routerLinkActive="active" routerLink="/pages/inprogress-exams">InProgress</button>
+        </div>
+        <div class="col-sm-3">
+            <button class="examBox">Completed</button>
+        </div>
+        <div class="col-sm-1">
+        </div>
+    </div>
+
+    <div class="row" style="padding-top: 20px;">
+        <div class="col-sm-2">
+        </div>
+        <div class="col-sm-3">
+            <button class="examBox">Evaluation In-Progress</button>
+        </div>
+
+        <div class="col-sm-3">
+            <button class="examBox">Evaluation Completed</button>
+        </div>
+        <div class="col-sm-3">
+            <button class="examBox">Evaluation Published</button>
+        </div>
+        <div class="col-sm-1">
+        </div>
+    </div>
+
+    <!-- <div class="row">
+        <div class="col-sm-9">
+            <h2> Upcoming Examinations </h2>
+        </div>
+
+        <div class="col-sm-3">
+            <mat-form-field>
+                <input matInput (keyup)="examFilter($event.target.value)" placeholder="Filter">
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="example-container mat-elevation-z8">
+                <mat-table [dataSource]="examsData" matSort >
+                    
+                    <ng-container matColumnDef="examDate">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Date / Time </mat-header-cell>
+                        <mat-cell *matCellDef="let row" > 
+                            <button type="button" class="btn btn-link"> {{row.ExamDate | date: "MMM d, yy" }} @ {{row.ExamDate | date: "h:mm a"}} </button> 
+                        </mat-cell>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="examType">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Type of Exam </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.ExamType}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="subject">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Subject </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.Subject}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="staffName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Staff </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.StaffName}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="year">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Year </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.Year}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="semester">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Semester </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.Semester}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="branch">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Branch </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.Branch}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="section">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Section </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.Section}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="status">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.Status}} </mat-cell>
+                    </ng-container>
+                
+                    <mat-header-row *matHeaderRowDef="examColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: examColumns;" (click)="onSelect(row)">
+                    </mat-row>
+                </mat-table>
+                <mat-paginator [pageSizeOptions]="[5, 10, 25, 45, 75]" showFirstLastButtons></mat-paginator>
+            </div>
+        </div>
+    </div> -->
+</body>

@@ -1,3 +1,108 @@
-<p>home works!</p>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Page Title</title>
 
-Testing
+</head>
+<body>
+    
+    <!-- <div class="text-center" *ngIf="isLoading">
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div> -->
+
+    <div [hidden]="loggedInUser">
+        <div class="card">
+            <div class="card-header">
+                Signup
+            </div>
+            <div class="card-body" >
+                <form class="form-inline" (submit)="signUp();">
+                    <label class="mr-sm-2" for="example-number-input">Enter Id</label>
+                    <div class="col-3">
+                        <input class="form-control" type="number" id="example-number-input" [(ngModel)]="userId" name="username">
+                    </div>
+                    <div class="col-6">
+                        <div id="recaptcha-container"></div>
+                    </div>
+                    
+                    <div class="col-3">
+                        <button type="submit" class="btn btn-primary" *ngIf="!pressedSignin">Sign in</button>
+                        <button class="btn btn-primary" disabled *ngIf="pressedSignin">
+                            <span class="spinner-grow spinner-grow-sm"></span>
+                            Sign in..
+                          </button>
+                    </div>
+                </form>
+                <div *ngIf="windowRef.confirmationResult">
+                    <hr>
+                    <label for="code">Enter your Verification Code Here</label><br>
+                    <input type="text" name="code" [(ngModel)]="verificationCode">
+                
+                    <button (click)="verifyLoginCode()" class="btn btn-primary" *ngIf="!pressedVerify">Verify</button>
+                    <button class="btn btn-primary" disabled *ngIf="pressedVerify">
+                        <span class="spinner-grow spinner-grow-sm"></span>
+                        Verifying..
+                      </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="loggedInUser">
+        <!-- <div>
+            <button (click)="logout()" class="btn btn-primary" *ngIf="!isLogoutPressed">Logout</button>
+            <button class="btn btn-primary" disabled *ngIf="isLogoutPressed">
+                <span class="spinner-grow spinner-grow-sm"></span>
+                Loging out..
+            </button>
+        </div> -->
+
+        <!-- <div class="row">
+            <div class="col-sm-3">
+            </div>
+            <div class="col-sm-3">
+                <button class="hoverBtn">Attendance</button>
+            </div>
+
+            <div class="col-sm-3">
+                <button class="hoverBtn">Examinations</button>
+            </div>
+            <div class="col-sm-3">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-3">
+            </div>
+            <div class="col-sm-3">
+                <button class="hoverBtn">Attendance</button>
+            </div>
+
+            <div class="col-sm-3">
+                <button class="hoverBtn">Examinations</button>
+            </div>
+            <div class="col-sm-3">
+            </div>
+        </div> -->
+
+        <!-- <h2> Hello, {{ user.Name }} </h2>
+        <p> You Mobile Number is: {{ user.Mobile }}</p>
+
+        You have successfully logged in with your phone number!
+
+        UserId: {{ user?.Id }}
+
+        <div>
+            <button (click)="logout()" class="btn btn-primary" *ngIf="!isLogoutPressed">Logout</button>
+            <button class="btn btn-primary" disabled *ngIf="isLogoutPressed">
+                <span class="spinner-grow spinner-grow-sm"></span>
+                Loging out..
+            </button>
+        </div> -->
+    </div>
+</body>
+</html>

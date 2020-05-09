@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title> Examinations </title>
+</head>
+<body>
+    <div class="row">
+        <div class="col-sm-9">
+            <h2> New Examination </h2>
+        </div>
+        <div class="col-sm-3">
+            <button type="button" class="btn btn-link" (click)="backClick()">
+                <svg class="bi bi-arrow-left-short" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" >
+                    <path fill-rule="evenodd" d="M7.854 4.646a.5.5 0 010 .708L5.207 8l2.647 2.646a.5.5 0 01-.708.708l-3-3a.5.5 0 010-.708l3-3a.5.5 0 01.708 0z" clip-rule="evenodd"/>
+                    <path fill-rule="evenodd" d="M4.5 8a.5.5 0 01.5-.5h6.5a.5.5 0 010 1H5a.5.5 0 01-.5-.5z" clip-rule="evenodd"/>
+                    </svg>BACK
+            </button>
+        </div>
+    </div>
+    <div>
+
+        <form (ngSubmit)="addNewExam()">
+            <div class="form-group row">
+              <label for="colFormLabel" class="col-sm-2 col-form-label">Academic Year</label>
+              <div class="col-sm-3">
+                <select class="custom-select" required [(ngModel)]="newExam.AcademicYear" name="academicYear">
+                    <option selected>2018-19</option>
+                    <option>2019-20</option>
+                  </select>
+              </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="colFormLabel" class="col-sm-2 col-form-label">Exam Type</label>
+                <div class="col-sm-3">
+                  <select class="custom-select" required [(ngModel)]="newExam.Type" name="examType">
+                      <option selected>Internal</option>
+                      <option>External</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="colFormLabel" class="col-sm-2 col-form-label">Year</label>
+                <div class="col-sm-3">
+                  <select class="custom-select" required [(ngModel)]="newExam.Year" name="examYear">
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="colFormLabel" class="col-sm-2 col-form-label">Semester</label>
+                <div class="col-sm-3">
+                  <select class="custom-select" required [(ngModel)]="newExam.Semester" name="examSemester">
+                      <option selected>1</option>
+                      <option>2</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="colFormLabel" class="col-sm-2 col-form-label">Branch</label>
+                <div class="col-sm-3">
+                  <select class="custom-select" required [(ngModel)]="newExam.Branch" name="examBranch">
+                      <option selected>ECE</option>
+                      <option>CSE</option>
+                      <option>IT</option>
+                      <option>Mechanical</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="colFormLabel" class="col-sm-2 col-form-label">Section</label>
+                <div class="col-sm-3">
+                  <select class="custom-select" required [(ngModel)]="newExam.Section" name="examSection">
+                      <option selected>A</option>
+                      <option>B</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="colFormLabel" class="col-sm-2 col-form-label">Subject</label>
+                <div class="col-sm-3">
+                  <select class="custom-select" required [(ngModel)]="newExam.Subject" name="examSubject">
+                      <option selected>English</option>
+                      <option>Mathematics</option>
+                      <option>DBMS</option>
+                      <option>Logic Design</option>
+                      <option>Signals & Systems</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row" style="padding-top: 40px;">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-1">
+                    <button class="btn btn-danger" (click)="backClick()">Cancel</button>
+                </div>
+                <div class="col-sm-1">
+                    <button class="btn btn-primary" type="submit" data-toggle="modal" data-target="#myModal">Submit</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- The Modal -->
+        <div class="modal fade" id="myModal">
+            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                New Exam is added successfully
+                </div>
+                
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="backClick()">Okay</button>
+                </div>
+                
+            </div>
+            </div>
+        </div>
+        <!-- <form class="form-inline">
+
+            <div class="col-md-3 mb-3">
+                <label for="validationServer04">Exam Type</label>
+                <select class="custom-select is-invalid" id="validationServer04" required>
+                  <option selected disabled value="">Select</option>
+                  <option>Internal</option>
+                  <option>External</option>
+                </select>
+                <div class="invalid-feedback">
+                  Please select a valid state.
+                </div>
+              </div>
+
+            <div class="form-row">
+              <div class="col-md-4 mb-3">
+                <label for="validationServer01">First name</label>
+                <input type="text" class="form-control is-valid" id="validationServer01" value="Mark" required>
+                <div class="valid-feedback">
+                  Looks good!
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="validationServer02">Last name</label>
+                <input type="text" class="form-control is-valid" id="validationServer02" value="Otto" required>
+                <div class="valid-feedback">
+                  Looks good!
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="validationServerUsername">Username</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroupPrepend3">@</span>
+                  </div>
+                  <input type="text" class="form-control is-invalid" id="validationServerUsername" aria-describedby="inputGroupPrepend3" required>
+                  <div class="invalid-feedback">
+                    Please choose a username.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-6 mb-3">
+                <label for="validationServer03">City</label>
+                <input type="text" class="form-control is-invalid" id="validationServer03" required>
+                <div class="invalid-feedback">
+                  Please provide a valid city.
+                </div>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="validationServer04">State</label>
+                <select class="custom-select is-invalid" id="validationServer04" required>
+                  <option selected disabled value="">Choose...</option>
+                  <option>...</option>
+                </select>
+                <div class="invalid-feedback">
+                  Please select a valid state.
+                </div>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="validationServer05">Zip</label>
+                <input type="text" class="form-control is-invalid" id="validationServer05" required>
+                <div class="invalid-feedback">
+                  Please provide a valid zip.
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="form-check">
+                <input class="form-check-input is-invalid" type="checkbox" value="" id="invalidCheck3" required>
+                <label class="form-check-label" for="invalidCheck3">
+                  Agree to terms and conditions
+                </label>
+                <div class="invalid-feedback">
+                  You must agree before submitting.
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-primary" type="submit">Submit form</button>
+          </form> -->
+    </div>
+</body>
