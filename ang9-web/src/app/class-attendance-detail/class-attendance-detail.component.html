@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Chart </title>
+</head>
+<body>
+    <div [hidden]="!hasAttendance">
+    <div class="row">
+        <div class="col-sm-6">
+            <canvas #classAttendanceCanvas height="200px"></canvas>
+        </div>
+
+        <div class="col-sm-6">
+            <p *ngIf="classPercent">
+                Total Students: {{ classPercent.total }} <br>
+                Present: {{ classPercent.isPresent }}<br>
+                Absemt: {{ classPercent.isAbsent }}<br>
+                Present %: {{ classPercent.percent }}<br>
+                Absent %: {{ classPercent.absentPercent }}<br>
+            </p>
+        </div>
+            <!-- <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <div class="clearfix">
+                        <canvas #classAttendanceCanvas height="200px"></canvas>
+                        <p *ngIf="classPercent">
+                            Total Students: {{ classPercent.total }}
+                            Present: {{ classPercent.isPresent }}
+                            Absemt: {{ classPercent.isAbsent }}
+                            Present %: {{ classPercent.percent }}
+                            Absent %: {{ classPercent.absentPercent }}
+                        </p>
+                        </div>
+                    <!-- <h2 class="card-title">Attendance Chart</h2>
+                    <h6 class="card-subtitle mb-2 text-muted">Apr, 28, 20 @ 12.20 AM</h6>
+                    <p class="card-text">
+                    <canvas #classAttendanceCanvas height="200px"></canvas>
+                    </p> 
+                </div>
+            </div> -->
+        
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div [hidden]="!studentsAttendance.length">
+                <h2> Attendance </h2>
+                    <div class="example-container mat-elevation-z8">
+                        <mat-table [dataSource]="viewAttendance" matSort >
+                            
+                            <ng-container matColumnDef="name">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+                                <mat-cell *matCellDef="let row" > 
+                                    {{ row.StudentName }}
+                                </mat-cell>
+                            </ng-container>
+            
+                            <ng-container matColumnDef="ispresent">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Present </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> <mat-icon>{{row.IsPresent}} </mat-icon></mat-cell>
+                            </ng-container>
+                        
+                            <mat-header-row *matHeaderRowDef="viewAttColumns"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: viewAttColumns;" >
+                            </mat-row>
+                        </mat-table>
+                        <mat-paginator [pageSizeOptions]="[5, 10, 25, 45, 75]" showFirstLastButtons></mat-paginator>
+                    </div>
+                </div>
+                
+        </div>
+    </div>
+    </div>
+    <div *ngIf="runReport && !hasAttendance">
+        No Attendance available
+    </div>
+</body>
+</html>

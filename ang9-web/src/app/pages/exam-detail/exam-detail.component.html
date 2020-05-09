@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title> Examinations </title>
+</head>
+<body>
+    <div class="row">
+        <div class="col-sm-6">
+            <button backButton type="button" class="btn btn-link" (click)="backClick()">
+                <svg class="bi bi-arrow-left-short" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" >
+                    <path fill-rule="evenodd" d="M7.854 4.646a.5.5 0 010 .708L5.207 8l2.647 2.646a.5.5 0 01-.708.708l-3-3a.5.5 0 010-.708l3-3a.5.5 0 01.708 0z" clip-rule="evenodd"/>
+                    <path fill-rule="evenodd" d="M4.5 8a.5.5 0 01.5-.5h6.5a.5.5 0 010 1H5a.5.5 0 01-.5-.5z" clip-rule="evenodd"/>
+                  </svg>BACK
+            </button>
+            <h2> Exam Details </h2>
+            <p> <strong>Status: </strong> {{ examDetail.Status }} </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="label"> <strong>Academic Year: </strong></label>
+                        </div>
+                        <div class="col-sm-4">
+                            <div> {{ examDetail.AcademicYear }} </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="label"> <strong>Exam Type: </strong></label>
+                        </div>
+                        <div class="col-sm-3">
+                            <div>{{ examDetail.Type }} </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="label"> <strong>Year: </strong></label>
+                        </div>
+                        <div class="col-sm-4">
+                            <div> {{ examDetail.Year }} </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="label"> <strong>Semester: </strong></label>
+                        </div>
+                        <div class="col-sm-6">
+                            <div> {{ examDetail.Semester }}  </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="label"> <strong>Branch: </strong></label>
+                        </div>
+                        <div class="col-sm-6">
+                            <div>{{ examDetail.Branch }}  </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5" *ngIf="examDetail.Section">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="label"> <strong>Section: </strong></label>
+                        </div>
+                        <div class="col-sm-4">
+                            <div>  {{ examDetail.Section }} </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <label class="label"> <strong>Subject: </strong></label>
+                        </div>
+                        <div class="col-sm-7">
+                            <div> {{ examDetail.Subject }} </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div  class="col-sm-4">
+            <!-- Chart will come -->
+        </div>
+    </div>
+</body>

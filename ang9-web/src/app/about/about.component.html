@@ -1,1 +1,48 @@
-<p>about works!</p>
+<!DOCTYPE html>
+<html>
+<!-- <head>
+    <meta charset="UTF-8">
+    <title>Attendance </title>
+</head> -->
+<body>
+    <div class="row">
+        <div class="col-sm-3">
+            <h2> My Classes </h2>
+        </div>
+
+        <div class="col-sm-3">
+            <mat-form-field>
+                <input matInput (keyup)="applyMyClassFilter($event.target.value)" placeholder="Filter">
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="example-container mat-elevation-z8">
+                <mat-table [dataSource]="dataSource" matSort >
+                    
+                    <ng-container matColumnDef="date">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Date / Time </mat-header-cell>
+                        <mat-cell *matCellDef="let row" > 
+                            <button type="button" class="btn btn-link"> {{row.CreatedDate | date: "MMM d, yy" }} @ {{row.CreatedDate | date: "h:mm a"}} </button> 
+                        </mat-cell>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="subject">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Subject </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.Subject}} </mat-cell>
+                    </ng-container>
+                
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onSelect(row)">
+                    </mat-row>
+                </mat-table>
+                <mat-paginator [pageSizeOptions]="[10, 25, 45, 75]" showFirstLastButtons></mat-paginator>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <app-class-attendance-detail [classId]="selectedClassId"></app-class-attendance-detail>
+        </div>
+    </div>
+</body>
+</html>
