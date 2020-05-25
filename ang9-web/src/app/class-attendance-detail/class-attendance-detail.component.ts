@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
-import {MatTableDataSource} from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { PhpService } from '../services/php.service';
@@ -8,12 +8,12 @@ import { DashboardService } from '../services/dashboard.service';
 import { UtilService } from '../services/util.service';
 
 interface ClassAttendance {
-  isPresent: string;
-  isAbsent:  string;
-  total:     string;
-  Size:      string;
-  percent:   string;
-  absentPercent: string;
+  Date: string;
+  presentCount:  string;
+  absentCount:     string;
+  presentPercent:      string;
+  absentPercent:   string;
+  TotalStudents: string;
 }
 
 interface ViewAttendance {
@@ -63,26 +63,42 @@ export class ClassAttendanceDetailComponent implements OnInit {
     this.percentages = [];
     this.classPercent = null;
     this.php.getClassAttendance(classId).subscribe(
-      (res: ClassAttendance[]) => {
-        if(parseInt(res[0].Size) > 0){
+      (res: ClassAttendance) => {
+        if(res){
+          this.classPercent = res;
           this.hasAttendance = true;
-          this.classPercent = res[0];
-
           // Parse Attendance
           this.parsePercentages();
-
           this.generateAttendanceChart();
-
-        }else if(parseInt(res[0].Size) == 0){
+        }else{
           this.removeChartData();
           this.hasAttendance = false;
           this.attendanceChart = undefined;
         }
+
+        // if(parseInt(res[0].Size) > 0){
+        //   this.hasAttendance = true;
+        //   this.classPercent = res[0];
+
+          // // Parse Attendance
+          // this.parsePercentages();
+
+          // this.generateAttendanceChart();
+
+        // }else if(parseInt(res[0].Size) == 0){
+          // this.removeChartData();
+          // this.hasAttendance = false;
+          // this.attendanceChart = undefined;
+        // }
+      }, error => {
+        this.removeChartData();
+        this.hasAttendance = false;
+        this.attendanceChart = undefined;
       });
   }
 
   parsePercentages() {
-    this.percentages.push(parseInt(this.classPercent.percent));
+    this.percentages.push(parseInt(this.classPercent.presentPercent));
     this.percentages.push(parseInt(this.classPercent.absentPercent));
   }
   

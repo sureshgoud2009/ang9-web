@@ -28,9 +28,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { ChartsModule } from 'ng2-charts';
 import { ClassAttendanceDetailComponent } from './class-attendance-detail/class-attendance-detail.component';
 import { ExamsComponent } from './pages/exams/exams.component';
-import { UpcomingExamsComponent } from './pages/upcoming-exams/upcoming-exams.component';
-import { InprogressExamsComponent } from './pages/inprogress-exams/inprogress-exams.component';
-import { CompletedExamsComponent } from './pages/completed-exams/completed-exams.component';
 import { NewExamComponent } from './pages/new-exam/new-exam.component';
 import { ExamDetailComponent } from './pages/exam-detail/exam-detail.component';
 
@@ -41,9 +38,6 @@ import { ExamDetailComponent } from './pages/exam-detail/exam-detail.component';
     AboutComponent,
     ClassAttendanceDetailComponent,
     ExamsComponent,
-    UpcomingExamsComponent,
-    InprogressExamsComponent,
-    CompletedExamsComponent,
     NewExamComponent,
     ExamDetailComponent
   ],

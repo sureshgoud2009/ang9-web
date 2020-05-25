@@ -6,6 +6,116 @@
 </head>
 <body>
     <div class="row">
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label >Exam Type</label>
+                <select class="form-control" [(ngModel)]="selectedExamType">
+                  <option *ngFor="let type of examTypes" > {{ type.Name }} </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-2.5">
+            <div class="form-group">
+                <label >Exam Name</label>
+                <select class="form-control" (change)="onExamNameChange($event.target.value)" [(ngModel)]="selectedExamName">
+                  <option *ngFor="let exam of examNames" value="{{exam.Id}}"> {{ exam.Name }} </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-1">
+            <div class="form-group">
+                <label for="scheme">Scheme</label>
+                <select class="form-control" (change)="onSchemeChange($event.target.value)" [(ngModel)]="selectedScheme">
+                  <option *ngFor="let sch of schemes" value="{{ sch.Year }}" > {{ sch.Year }} </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label for="branch">Branch</label>
+                <select class="form-control" [(ngModel)]="selectedBranch" (change)="onBranchChange($event.target.value)">
+                  <option *ngFor="let branch of examBranches" value="{{ branch.Branch }}"> {{ branch.Branch }} </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-1">
+            <div class="form-group">
+                <label>Semester</label>
+                <select class="form-control" [(ngModel)]="selectedSemester" (change)="onSemesterChange($event.target.value)">
+                  <option *ngFor="let sem of semesters" value="{{ sem.Semester }}"> {{ sem.Semester }} </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-1.5">
+            <div class="form-group">
+                <label>Status</label>
+                <select class="form-control" [(ngModel)]="selectedStatus" (change)="onStatusChange($event.target.value)">
+                  <option > Scheduled </option>
+                  <option > In Progress </option>
+                  <option > Completed </option>
+                  <option > Evaluation Inprogress </option>
+                  <option > Evaluation Completed </option>
+                  <option > Closed </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-1">
+            <div class="form-group" style="padding-top: 30px;" >
+                <button type="button" class="btn btn-primary" [disabled]="!isBtnEnabled" (click)="getExamTimeTable()">
+                      Search
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div [hidden]="!hasExamData">
+        <div class="row" >
+            <div class="col-sm-12">
+                <div class="example-container mat-elevation-z8">
+                    <mat-table [dataSource]="examTimeTable" >
+                        
+                        <ng-container matColumnDef="SubjectCode">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Subject Code </mat-header-cell>
+                            <mat-cell *matCellDef="let row" >
+                                <button type="button" class="btn btn-link"> {{row.SubjectCode }} </button> 
+                            </mat-cell>
+                        </ng-container>
+        
+                        <ng-container matColumnDef="SubjectName">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Subject Name </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.SubjectName}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Date">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Date </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.Date | date: "MMM d, yyyy"}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Time">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Time </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.Time}} </mat-cell>
+                        </ng-container>
+                    
+                        <mat-header-row *matHeaderRowDef="examColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: examColumns;" (click)="onSelect(row)">
+                        </mat-row>
+                    </mat-table>
+                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 45, 75]" showFirstLastButtons></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" *ngIf="!hasExamData && isSearchClicked">
+        <p class="noData"> TimeTable Not available </p>
+    </div>
+
+    <div [hidden]="disableDetailView">
+        <div class="examDetail">
+            <app-exam-detail></app-exam-detail>
+        </div>
+    </div>
+    <!-- <div class="row">
         <div class="col-sm-9">
 
         </div>
@@ -18,7 +128,7 @@
                   New Examination
             </button>
         </div>
-    </div>
+    </div> -->
 
    <!-- <div class="row">
         <div class="col-sm-3">
@@ -59,24 +169,24 @@
         </div>
       </nav> -->
 
-    <div class="row" style="padding-top: 20px;">
+    <!-- <div class="row" style="padding-top: 20px;">
         <div class="col-sm-2">
         </div>
         <div class="col-sm-3">
-            <button class="examBox" routerLinkActive="active" routerLink="/pages/upcoming-exams">Upcoming</button>
+            <button class="examBox" routerLinkActive="active" routerLink="/pages/upcoming-exams">Internal</button>
         </div>
 
         <div class="col-sm-3">
-            <button class="examBox" routerLinkActive="active" routerLink="/pages/inprogress-exams">InProgress</button>
+            <button class="examBox" routerLinkActive="active" routerLink="/pages/inprogress-exams">External</button>
         </div>
         <div class="col-sm-3">
             <button class="examBox">Completed</button>
         </div>
         <div class="col-sm-1">
         </div>
-    </div>
+    </div> -->
 
-    <div class="row" style="padding-top: 20px;">
+   <!-- <div class="row" style="padding-top: 20px;">
         <div class="col-sm-2">
         </div>
         <div class="col-sm-3">
@@ -93,7 +203,7 @@
         </div>
     </div>
 
-    <!-- <div class="row">
+     <div class="row">
         <div class="col-sm-9">
             <h2> Upcoming Examinations </h2>
         </div>

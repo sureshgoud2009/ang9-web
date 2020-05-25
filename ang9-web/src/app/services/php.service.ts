@@ -10,7 +10,8 @@ import { Examination } from '../models/exam';
 })
 export class PhpService {
 
-  server: string = 'http://192.168.178.20/college-sw-php/';
+  // server: string = 'http://192.168.178.20/college-sw-php/';
+  server: string = 'https://suresh-web.space/college-app/';
   user: User;
   users: User[] = [];
   
@@ -61,14 +62,6 @@ export class PhpService {
       catchError(this.handleError));
   }
 
-  //Get Exams
-  getExams() {
-    return this.http.get(this.server + 'getExams.php?classId=')
-      .pipe(map((res) => {
-        return res['data'];
-      }),
-      catchError(this.handleError));
-  }
 
   //Get Exam Detail
   getExamDetail(examId: string) {
@@ -88,9 +81,99 @@ export class PhpService {
       catchError(this.handleError));
   }
 
+  // Get EXAM TYPES
+  getExamTypes(): Observable<void> {
+    return this.http.get(this.server + 'getExamConfigs.php?key=examtypes')
+      .pipe(map((res) => {
+        console.log('Remote server Response: ', res);
+        return res['data'];
+      }),
+      catchError(this.handleError));
+  }
+
+  // Get Exam Names
+  getExamNames(): Observable<void> {
+    return this.http.get(this.server + 'getExamConfigs.php?key=examNames')
+      .pipe(map((res) => {
+        return res['data'];
+      }),
+      catchError(this.handleError));
+  }
+
+  // Get Exam Branches
+  getExamBranches(examId: string, scheme: string): Observable<void> {
+    return this.http.get(this.server + 'getExamConfigs.php?key=branches&examId='+ examId + '&scheme=' + scheme)
+      .pipe(map((res) => {
+        return res['data'];
+      }),
+      catchError(this.handleError));
+  }
+
+  // Get Unique Schemas
+  getUniqueSchemas(examId: string): Observable<void> {
+    return this.http.get(this.server + 'getExamConfigs.php?key=schemes&examId='+ examId)
+      .pipe(map((res) => {
+        return res['data'];
+      }),
+      catchError(this.handleError));
+  }
+
+  // GetSemesters
+  getSemesters(scheme: string): Observable<void> {
+    return this.http.get(this.server + 'getExamConfigs.php?key=semesters&scheme='+ scheme)
+      .pipe(map((res) => {
+        return res['data'];
+      }),
+      catchError(this.handleError));
+  }
+
+  // Get Subjects
+  getSubjects(): Observable<void> {
+    return this.http.get(this.server + 'getExamConfigs.php?key=subjects')
+      .pipe(map((res) => {
+        return res['data'];
+      }),
+      catchError(this.handleError));
+  }
+
+  //Get Exam Timetable updateExamStatus
+  getExamTimeTable(scheme: string, 
+                    branch: string, 
+                    semester: string, 
+                    examName: string, 
+                    status: string
+                  ) {
+    return this.http.get(this.server + 'getExamTimeTable.php?scheme=' + scheme + 
+                                        '&branch=' + branch + 
+                                        '&semester=' + semester + 
+                                        '&examName=' + examName + 
+                                        '&status=' + status)
+      .pipe(map((res) => {
+        return res['data'];
+      }),
+      catchError(this.handleError));
+  }
+
+  //Update Exam Status
+  updateExamStatus(examStatus: string, examId: string): Observable<void> {
+
+    interface ExamStatus {
+      ExamId: string;
+      Status: string;
+    }
+
+    let examData = {} as ExamStatus;
+    examData.ExamId = examId;
+    examData.Status = examStatus;
+
+    return this.http.post(this.server + 'updateExamStatus.php', { data: examData })
+      .pipe(map((res) => {
+        return res['data'];
+      }),
+      catchError(this.handleError));
+  }
+
   private handleError(error: HttpErrorResponse) {
-    console.log(error);
-  
-    return throwError('Error! something went wrong: '+ error.message);
+    return throwError('StatusCode:'+ error.status );
   }
 }

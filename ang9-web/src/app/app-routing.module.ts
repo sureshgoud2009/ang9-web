@@ -4,8 +4,6 @@ import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { AuthGuard } from './services/auth.guard';
 import { ExamsComponent } from './pages/exams/exams.component';
-import { UpcomingExamsComponent } from './pages/upcoming-exams/upcoming-exams.component';
-import { InprogressExamsComponent } from './pages/inprogress-exams/inprogress-exams.component';
 import { NewExamComponent } from './pages/new-exam/new-exam.component';
 import { ExamDetailComponent } from './pages/exam-detail/exam-detail.component';
 
@@ -27,16 +25,6 @@ const routes: Routes = [
   { 
     path: 'pages/exams', 
     component: ExamsComponent,
-    canActivate: [AuthGuard]
-  },
-  { 
-    path: 'pages/upcoming-exams', 
-    component: UpcomingExamsComponent,
-    canActivate: [AuthGuard]
-  },
-  { 
-    path: 'pages/inprogress-exams', 
-    component: InprogressExamsComponent,
     canActivate: [AuthGuard]
   },
   { 
