@@ -1,21 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Location } from '@angular/common';
 import { PhpService } from 'src/app/services/php.service';
 import { ActivatedRoute } from '@angular/router';
+import { UtilService } from 'src/app/services/util.service';
 
-export interface Examination {
-  ExamId :      string;
-  Type :        string;
-  Subject:      string;
-  StaffName:    string;
-  AcademicYear: string;
-  Year:         string;
-  Semester:     string;
-  Branch:       string;
-  Section:      string;
-  Status:       string;
-  ExamDate:     string;
-  Size:         string;
+interface ExamTimetable {
+  ExamId: string;
+  SubjectCode: string;
+  Date: string;
+  Time: string;
+  SubjectName: string;
+  Status: string;
 }
 
 @Component({
@@ -25,28 +20,46 @@ export interface Examination {
 })
 export class ExamDetailComponent implements OnInit {
 
-  examId: string;
-  examDetail = {} as Examination;
+  examDetail = {} as ExamTimetable;
+  selectedStatus: string;
 
   constructor(private location: Location,
     private php: PhpService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private util: UtilService) { }
 
-  ngOnInit(): void {
-    this.examId = this.route.snapshot.params.examId;
-    this.getExamDetail();
+  ngOnInit(): void {}
+
+  getExamDetails(examDetail) {
+   this.examDetail = examDetail;
   }
 
   backClick() {
     this.location.back();
   }
 
-  getExamDetail() {
-    this.php.getExamDetail(this.examId).subscribe(
-      (res: Examination) => {
-       this.examDetail = res;
-        console.log('Exam Detail: ', this.examDetail);
-      });
+  onStatusChange(val: any) {
+    console.log('Status: ', this.selectedStatus);
+    console.log('val: ', val);
   }
+
+  updateStatus() {
+    if(this.util.isNotNull(this.selectedStatus) && this.util.isNotNull(this.examDetail.ExamId)) {
+      this.php.updateExamStatus(this.selectedStatus, this.examDetail.ExamId).subscribe(
+        (res: any) => {
+          console.log('Resp Update: ', res);
+        }, error => {
+        }
+      );
+    }
+  }
+
+  // getExamDetail() {
+  //   this.php.getExamDetail(this.examId).subscribe(
+  //     (res: Examination) => {
+  //      this.examDetail = res;
+  //       console.log('Exam Detail: ', this.examDetail);
+  //     });
+  // }
 
 }

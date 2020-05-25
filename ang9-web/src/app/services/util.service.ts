@@ -26,4 +26,28 @@ export class UtilService {
         break;
       }
   }
+
+  isNotNull(val: string){
+    if (val != null && val != undefined && val != '') {
+        return true;
+    }else {
+      return false;
+    }
+  }
+
+  isNotNullAndEmpty(val: string){
+    if (val != null && val != undefined && val != '' && val != 'empty') {
+        return true;
+    }else {
+      return false;
+    }
+  }
+
+  handleErrors(statusCode: string, errorMessage: string){
+    switch(statusCode) {
+      case '404':
+        return errorMessage;
+        break;
+    }
+  }
 }

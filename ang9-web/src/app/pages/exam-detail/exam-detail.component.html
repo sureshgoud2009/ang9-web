@@ -5,106 +5,102 @@
     <title> Examinations </title>
 </head>
 <body>
-    <div class="row">
-        <div class="col-sm-6">
-            <button backButton type="button" class="btn btn-link" (click)="backClick()">
-                <svg class="bi bi-arrow-left-short" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" >
-                    <path fill-rule="evenodd" d="M7.854 4.646a.5.5 0 010 .708L5.207 8l2.647 2.646a.5.5 0 01-.708.708l-3-3a.5.5 0 010-.708l3-3a.5.5 0 01.708 0z" clip-rule="evenodd"/>
-                    <path fill-rule="evenodd" d="M4.5 8a.5.5 0 01.5-.5h6.5a.5.5 0 010 1H5a.5.5 0 01-.5-.5z" clip-rule="evenodd"/>
-                  </svg>BACK
-            </button>
-            <h2> Exam Details </h2>
-            <p> <strong>Status: </strong> {{ examDetail.Status }} </p>
+    <div class="card">
+        <h2 class="card-header">Exam Details</h2>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-10">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <label class="label"> <strong>Subject Name: </strong></label>
+                        </div>
+                        <div class="col-sm-10">
+                            <div> {{ examDetail.SubjectName }} </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                        Update Status
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="label"> <strong>Subject Code: </strong></label>
+                        </div>
+                        <div class="col-sm-6">
+                            <div> {{ examDetail.SubjectCode }} </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label class="label"> <strong>Status: </strong></label>
+                        </div>
+                        <div class="col-sm-9">
+                            <div>{{ examDetail.Status }} </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="label"> <strong>Date: </strong></label>
+                        </div>
+                        <div class="col-sm-6">
+                            <div> {{ examDetail.Date | date: "MMM d, yyyy" }} </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label class="label"> <strong>Time: </strong></label>
+                        </div>
+                        <div class="col-sm-6">
+                            <div>{{ examDetail.Time }} </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-sm-8">
-            <div class="row">
-                <div class="col-sm-5">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <label class="label"> <strong>Academic Year: </strong></label>
-                        </div>
-                        <div class="col-sm-4">
-                            <div> {{ examDetail.AcademicYear }} </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-5">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <label class="label"> <strong>Exam Type: </strong></label>
-                        </div>
-                        <div class="col-sm-3">
-                            <div>{{ examDetail.Type }} </div>
-                        </div>
-                    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Status</label>
+                    <select class="form-control" [(ngModel)]="selectedStatus" (change)="onStatusChange($event.target.value)">
+                      <option > Scheduled </option>
+                      <option > In Progress </option>
+                      <option > Completed </option>
+                      <option > Evaluation Inprogress </option>
+                      <option > Evaluation Completed </option>
+                      <option > Closed </option>
+                    </select>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="col-sm-5">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <label class="label"> <strong>Year: </strong></label>
-                        </div>
-                        <div class="col-sm-4">
-                            <div> {{ examDetail.Year }} </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-5">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <label class="label"> <strong>Semester: </strong></label>
-                        </div>
-                        <div class="col-sm-6">
-                            <div> {{ examDetail.Semester }}  </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-5">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <label class="label"> <strong>Branch: </strong></label>
-                        </div>
-                        <div class="col-sm-6">
-                            <div>{{ examDetail.Branch }}  </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-5" *ngIf="examDetail.Section">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <label class="label"> <strong>Section: </strong></label>
-                        </div>
-                        <div class="col-sm-4">
-                            <div>  {{ examDetail.Section }} </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm">
-                    <div class="row">
-                        <div class="col-sm-2">
-                            <label class="label"> <strong>Subject: </strong></label>
-                        </div>
-                        <div class="col-sm-7">
-                            <div> {{ examDetail.Subject }} </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" (click)="updateStatus()">Save changes</button>
             </div>
         </div>
-
-        <div  class="col-sm-4">
-            <!-- Chart will come -->
         </div>
     </div>
 </body>
