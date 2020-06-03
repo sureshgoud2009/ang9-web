@@ -27,6 +27,26 @@ export class UtilService {
       }
   }
 
+  getAttendanceFontColor(isPresent: string) {
+    switch(isPresent){
+      case '1':
+        return 'blue';
+        break;
+      case '0':
+        return 'red';
+        break;
+      case 'true':
+        return 'blue';
+        break;
+      case 'false':
+        return 'red';
+        break;
+      default:
+        return 'black';
+        break;
+      }
+  }
+
   isNotNull(val: string){
     if (val != null && val != undefined && val != '') {
         return true;

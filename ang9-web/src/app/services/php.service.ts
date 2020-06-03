@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { retry, catchError, map } from 'rxjs/operators';
 import { User } from '../models/user';
 import { Examination } from '../models/exam';
+import { SubmitMarks } from '../models/SubmitMarks';
 
 @Injectable({
   providedIn: 'root'
@@ -45,8 +46,8 @@ export class PhpService {
   }
 
   //Get Class Attendance of Students list
-  getClassAttendanceList(classId: string) {
-    return this.http.get(this.server + 'getClassAttendanceList.php?classId='+ classId)
+  getClassAttendanceList(classId: string, type: string) {
+    return this.http.get(this.server + 'getClassAttendanceList.php?classId='+ classId + '&type=' + type)
       .pipe(map((res) => {
         return res['data'];
       }),
@@ -54,14 +55,22 @@ export class PhpService {
   }
 
   //Get Attendance percentage per class
-  getClassAttendance(classId: string) {
-    return this.http.get(this.server + 'getClassAttendancePercent.php?classId='+ classId)
+  getClassAttendance(attendanceId: string, type: string) {
+    return this.http.get(this.server + 'getClassAttendancePercent.php?classId='+ attendanceId + '&type=' + type)
       .pipe(map((res) => {
         return res['data'];
       }),
       catchError(this.handleError));
   }
 
+  //Get Students
+  getStudents(year: string, branch: string, section: string, semester: string) {
+    return this.http.get(this.server + 'getStudents.php?year='+ year + '&branch=' + branch + '&section=' + section + '&semester=' + semester)
+      .pipe(map((res) => {
+        return res['data'];
+      }),
+      catchError(this.handleError));
+  }
 
   //Get Exam Detail
   getExamDetail(examId: string) {
@@ -140,14 +149,12 @@ export class PhpService {
   getExamTimeTable(scheme: string, 
                     branch: string, 
                     semester: string, 
-                    examName: string, 
-                    status: string
+                    examName: string
                   ) {
     return this.http.get(this.server + 'getExamTimeTable.php?scheme=' + scheme + 
                                         '&branch=' + branch + 
                                         '&semester=' + semester + 
-                                        '&examName=' + examName + 
-                                        '&status=' + status)
+                                        '&examName=' + examName)
       .pipe(map((res) => {
         return res['data'];
       }),
@@ -155,22 +162,49 @@ export class PhpService {
   }
 
   //Update Exam Status
-  updateExamStatus(examStatus: string, examId: string): Observable<void> {
+  updateExamStatus(examStatus: string, examId: string, key: string): Observable<void> {
 
     interface ExamStatus {
       ExamId: string;
       Status: string;
+      key:    string;
     }
 
     let examData = {} as ExamStatus;
     examData.ExamId = examId;
     examData.Status = examStatus;
+    examData.key = key;
 
     return this.http.post(this.server + 'updateExamStatus.php', { data: examData })
       .pipe(map((res) => {
         return res['data'];
       }),
       catchError(this.handleError));
+  }
+
+  getStudentsToSubmitMarks(scheme: string, branch: string, semester: string, key: string, examId: string, limit: number, offset: number): Observable<void> {
+    return this.http.get(this.server + 'getStudentsToSubmitMarks.php?key=' + key + '&scheme=' + scheme + '&branch='+ branch + '&semester=' + semester + '&examId=' + examId +
+                                '&limit=' + limit + '&offset=' + offset)
+      .pipe(map((res) => {
+        return res['data'];
+      }),
+      catchError(this.handleError));
+  }
+
+  addStudentMarks(submitMarks: SubmitMarks[]): Observable<void> {
+    return this.http.post(this.server + 'submitMarks.php', { data: submitMarks })
+    .pipe(map((res) => {
+      return res['data'];
+    }),
+    catchError(this.handleError));
+  }
+
+  updateStudentMarks(submitMarks: SubmitMarks[]): Observable<void>{
+    return this.http.post(this.server + 'updateMarks.php', { data: submitMarks })
+    .pipe(map((res) => {
+      return res['data'];
+    }),
+    catchError(this.handleError));
   }
 
   private handleError(error: HttpErrorResponse) {

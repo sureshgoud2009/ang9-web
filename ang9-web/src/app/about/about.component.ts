@@ -10,6 +10,7 @@ import { PhpService } from '../services/php.service';
 import { DashboardService } from '../services/dashboard.service';
 import { UtilService } from './../services/util.service';
 import { ClassAttendanceDetailComponent } from '../class-attendance-detail/class-attendance-detail.component';
+import { AttendanceChartComponent } from '../pages/attendance-chart/attendance-chart.component';
 
 export interface StaffClasses {
   ClassId :    string;
@@ -35,9 +36,11 @@ export class AboutComponent implements OnInit {
   myClasses: StaffClasses[] = [];
   dataSource: MatTableDataSource<StaffClasses>;
   selectedClassId: string;
+  loadChartSpin: boolean = false;
   percents: number[] = [];
 
   @ViewChild(ClassAttendanceDetailComponent ) child: ClassAttendanceDetailComponent ; 
+  @ViewChild(AttendanceChartComponent )  attendanceChart: AttendanceChartComponent ; 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
 
@@ -68,8 +71,13 @@ export class AboutComponent implements OnInit {
   }
 
   onSelect(row){
+    this.loadChartSpin = true;
     this.selectedClassId = row.ClassId;
     this.child.displayAttendanceReport(row.ClassId);
+
+    this.attendanceChart.getAttendanceChart(row.ClassId, 'class').then( () => {
+      this.loadChartSpin = false;
+    });
   }
 
   
