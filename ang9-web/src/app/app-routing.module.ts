@@ -5,7 +5,7 @@ import { AboutComponent } from './about/about.component';
 import { AuthGuard } from './services/auth.guard';
 import { ExamsComponent } from './pages/exams/exams.component';
 import { NewExamComponent } from './pages/new-exam/new-exam.component';
-import { ExamDetailComponent } from './pages/exam-detail/exam-detail.component';
+import { StudentMarksComponent } from './pages/student-marks/student-marks.component';
 
 const routes: Routes = [
   { 
@@ -33,10 +33,15 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   { 
-    path: 'pages/exam-detail/:examId', 
-    component: ExamDetailComponent,
+    path: 'pages/student-marks/:examId/:type', 
+    component: StudentMarksComponent,
     canActivate: [AuthGuard]
   }
+  // { 
+  //   path: 'pages/exam-detail/:examId', 
+  //   component: ExamDetailComponent,
+  //   canActivate: [AuthGuard]
+  // }
 ];
 
 @NgModule({

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <div [hidden]="!submitMarks1">
+        <div class=row>
+            <div class="col-sm-1">
+                <button type="button" class="btn btn-link" routerLinkActive="active" routerLink="/pages/exams">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+            </div>
+            <div class="col-sm-5">
+                <h2 class="primary"> Enter Marks </h2>
+            </div>
+            <div class="col-sm-6">
+                <mat-form-field>
+                    <input matInput (keyup)="applyStudentsFilter1($event.target.value)" placeholder="Filter">
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div *ngIf="loader1" >
+                    <app-loader></app-loader>
+                </div>
+                <div [hidden]="!submitMarks1.length">
+
+                    <div class="example-container mat-elevation-z8">
+                        <mat-table [dataSource]="dataSource1" matSort>
+                            <ng-container matColumnDef="name">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header> <strong>Name</strong> </mat-header-cell>
+                                <mat-cell *matCellDef="let row" > 
+                                    {{ row.StudentName }}
+                                </mat-cell>
+                            </ng-container>
+            
+                            <ng-container matColumnDef="marks">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header><strong>Marks</strong> </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> 
+                                <div *ngIf="typeOfPage == 'new' || typeOfPage == 'edit'" >
+                                    <input matInput type="number" maxlength="3" placeholder="Marks" value="{{ row.Marks }}" min="0" max="100" [(ngModel)]="row.Marks">
+                                </div>
+                                <div *ngIf="typeOfPage == 'view'">
+                                    {{ row.Marks }}
+                                </div>
+                            </mat-cell>
+                            </ng-container>
+                        
+                            <mat-header-row *matHeaderRowDef="viewStudentColumns1"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: viewStudentColumns1;" ></mat-row>
+                        </mat-table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div *ngIf="loader2" >
+                    <app-loader></app-loader>
+                </div>
+                <div [hidden]="!submitMarks2.length">
+                    <div class="example-container mat-elevation-z8">
+                        <mat-table [dataSource]="dataSource2" >
+                            <ng-container matColumnDef="name">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+                                <mat-cell *matCellDef="let row" > 
+                                    {{ row.StudentName }}
+                                </mat-cell>
+                            </ng-container>
+            
+                            <ng-container matColumnDef="marks">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Marks </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> 
+                                <div *ngIf="typeOfPage == 'new' || typeOfPage == 'edit'" >
+                                    <input matInput type="number" maxlength="3" placeholder="Marks" value="{{ row.Marks }}" min="0" max="100" [(ngModel)]="row.Marks">
+                                </div>
+                                <div *ngIf="typeOfPage == 'view'">
+                                    {{ row.Marks }}
+                                </div>
+                            </mat-cell>
+                            </ng-container>
+                        
+                            <mat-header-row *matHeaderRowDef="viewStudentColumns2"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: viewStudentColumns2;" ></mat-row>
+                        </mat-table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div *ngIf="loader3" >
+                    <app-loader></app-loader>
+                </div>
+
+                <div [hidden]="!submitMarks3.length">
+                    <div class="example-container mat-elevation-z8">
+                        <mat-table [dataSource]="dataSource3" >
+                            <ng-container matColumnDef="name">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+                                <mat-cell *matCellDef="let row" > 
+                                    {{ row.StudentName }}
+                                </mat-cell>
+                            </ng-container>
+            
+                            <ng-container matColumnDef="marks">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Marks </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> 
+                                <div *ngIf="typeOfPage == 'new' || typeOfPage == 'edit'" >
+                                    <input matInput type="number" maxlength="3" placeholder="Marks" value="{{ row.Marks }}" min="0" max="100" [(ngModel)]="row.Marks">
+                                </div>
+                                <div *ngIf="typeOfPage == 'view'">
+                                    {{ row.Marks }}
+                                </div>
+                            </mat-cell>
+                            </ng-container>
+                        
+                            <mat-header-row *matHeaderRowDef="viewStudentColumns3"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: viewStudentColumns3;" ></mat-row>
+                        </mat-table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group" style="padding-top: 10px;" *ngIf="examDetail.Status == 'Evaluation Inprogress' && examDetail.MarksStatus == null">
+                    <button type="button" class="btn btn-primary btn-lg btn-block" [disabled]="initLoading" (click)="insertMarks()">
+                        Save
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="examDetail.Status == 'Evaluation Inprogress' && examDetail.MarksStatus == 'Draft' && typeOfPage == 'edit'">
+            <div class="col-sm-6">
+                <div class="form-group" style="padding-top: 10px;" >
+                    <button type="button" class="btn btn-primary btn-lg btn-block" [disabled]="initLoading" (click)="updateMarks()">
+                        Update
+                    </button>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group" style="padding-top: 10px;" *ngIf="examDetail.Status == 'Evaluation Inprogress' && examDetail.MarksStatus == 'Draft'">
+                    <button type="button" class="btn btn-primary btn-lg btn-block" [disabled]="initLoading" (click)="updateStatus('Published', 'ExamMarksStatus')">
+                        Publish Marks with Students
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="examDetail.Status == 'Evaluation Inprogress' && examDetail.MarksStatus == 'Draft' && typeOfPage == 'view'">
+            <div class="col-sm-12">
+                <div class="form-group" style="padding-top: 10px;">
+                    <button type="button" class="btn btn-primary btn-lg btn-block" [disabled]="initLoading" (click)="updateStatus('Published', 'ExamMarksStatus')">
+                        Publish Marks with Students
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="examDetail.Status == 'Evaluation Inprogress' && examDetail.MarksStatus == 'Published'">
+            <div class="col-sm-12">
+                <div class="form-group" style="padding-top: 10px;">
+                    <button type="button" class="btn btn-primary btn-lg btn-block" [disabled]="initLoading" (click)="updateStatus('Evaluation Completed', 'ExamStatus')">
+                        Complete Evaluation
+                    </button>
+                </div>
+            </div>
+        </div>
+       
+
+        <!-- <div class="row">
+            <div class="col-sm-12">
+                <app-loader></app-loader>
+            </div>
+        </div> -->
+
+    </div>
+</body>

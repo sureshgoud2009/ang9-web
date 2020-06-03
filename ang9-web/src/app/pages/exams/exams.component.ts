@@ -59,7 +59,6 @@ export class ExamsComponent implements OnInit {
   selectedScheme: string;
   selectedSemester: string;
   selectedExamType: string;
-  selectedStatus: string = 'Scheduled';
 
   isBtnEnabled: boolean = false;
   isSearchClicked: boolean = false;
@@ -74,8 +73,10 @@ export class ExamsComponent implements OnInit {
   examNames: ExamNames[] = [];
 
   errorMsg: string;
+  loadSpinner: boolean = false;
+  detailViewSpin: boolean = false;
 
-  examColumns = ['SubjectCode', 'SubjectName', 'Date', 'Time'];
+  examColumns = ['SubjectCode', 'SubjectName', 'Date', 'Time', 'Status'];
   examTimeTable: MatTableDataSource<ExamTimetable>;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -120,6 +121,7 @@ export class ExamsComponent implements OnInit {
       }, error => {
         this.errorMsg = this.util.handleErrors(error.split(':')[1], 'No Schemes available');
         this.isBtnEnabled = this.enableSearchButton();
+        this.loadSpinner = false;
       }
     );
   }
@@ -145,14 +147,17 @@ export class ExamsComponent implements OnInit {
             this.semesters = res;
             this.selectedSemester = this.semesters[0].Semester;
             this.isBtnEnabled = this.enableSearchButton();
+            this.loadSpinner = false;
         }, error => {
           this.isBtnEnabled = this.enableSearchButton();
+          this.loadSpinner = false;
         }
       );
     }
   }
 
   onExamNameChange(val) {
+    this.loadSpinner = true;
     this.selectedExamName = val;
     this.schemes = [];
     this.semesters = [];
@@ -210,65 +215,36 @@ export class ExamsComponent implements OnInit {
   }
 
   getExamTimeTable(){
+    this.loadSpinner = true;
     this.hasExamData = false;
-    this.isSearchClicked = true;
+    this.isSearchClicked = false;
+    this.disableDetailView = true;
 
     if(this.util.isNotNull(this.selectedExamName) && this.util.isNotNull(this.selectedScheme) && this.util.isNotNull(this.selectedBranch) && this.util.isNotNull(this.selectedSemester)) {
-      this.php.getExamTimeTable(this.selectedScheme, this.selectedBranch, this.selectedSemester, this.selectedExamName, this.selectedStatus).subscribe(
+      this.php.getExamTimeTable(this.selectedScheme, this.selectedBranch, this.selectedSemester, this.selectedExamName).subscribe(
         (res: any) => {
             this.examTimeTable = new MatTableDataSource(res);
             this.examTimeTable.paginator = this.paginator;
-            // this.examTimeTable.sort = this.sort;
             this.hasExamData = true;
+            this.loadSpinner = false;
+            this.isSearchClicked = true;
 
         }, error => {
           this.hasExamData = false;
+          this.loadSpinner = false;
+          this.isSearchClicked = true;
         }
       );
     }
   }
 
   onSelect(row){
-    this.disableDetailView = false;
-    this.child.getExamDetails(row);
-    // this.child.displayAttendanceReport(row.ClassId);
+    this.detailViewSpin = true;
+    this.disableDetailView = true;
+
+    this.child.getExamDetails(row).then(() => {
+      this.detailViewSpin = false;
+      this.disableDetailView = false;
+    });
   }
-
-  // examFilter(filterValue: string) {
-  //     this.examTimeTable.filter = filterValue.trim().toLowerCase();
-  // }
-
-  // examList = ['Upcoming', 'InProgress', 'Completed', 'Evaliation Started', 'Evaliation Completed', 'Published'];
-  // getExams() {
-  //   this.php.getExams().subscribe(
-  //     (res: Examination[]) => {
-  //       if(parseInt(res[0].Size) > 0){
-          // this.examsData = new MatTableDataSource(res);
-          // this.examsData.paginator = this.paginator;
-          // this.examsData.sort = this.sort;
-  //       }else {
-
-  //       }
-  //     });
-  // }
-
-  // examFilter(filterValue: string) {
-  //   this.examsData.filter = filterValue.trim().toLowerCase();
-  // }
-
-  // onSelect(row){
-  //   console.log('Selected Exam: ', row);
-  // }
-
-  // onSelectGroup(el) {
-  //   console.log('Selected Group: ', el);
-  //   // el.classList.add('active');
-  // }
-
-  // active: number;
-  // onClick(index: number) {
-  //   console.log('selected val: ', index);
-  //   this.active = index;
-  // }
-
 }

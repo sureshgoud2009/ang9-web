@@ -5,102 +5,175 @@
     <title> Examinations </title>
 </head>
 <body>
-    <div class="card">
-        <h2 class="card-header">Exam Details</h2>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-sm-10">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <h2 class="card-header">Exam Details</h2>
+                <div class="card-body">
                     <div class="row">
-                        <div class="col-sm-2">
-                            <label class="label"> <strong>Subject Name: </strong></label>
+                        <div class="col-sm-3">
+                            <label class="label"> <strong>Subject: </strong></label>
                         </div>
-                        <div class="col-sm-10">
+                        <div class="col-sm-9">
                             <div> {{ examDetail.SubjectName }} </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-2">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                        Update Status
-                    </button>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <label class="label"> <strong>Subject Code: </strong></label>
-                        </div>
-                        <div class="col-sm-6">
-                            <div> {{ examDetail.SubjectCode }} </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3">
+
                     <div class="row">
                         <div class="col-sm-3">
+                            <label class="label"> <strong>Subject Code: </strong></label>
+                        </div>
+                        <div class="col-sm-3">
+                            <div> {{ examDetail.SubjectCode }} </div>
+                        </div>
+                        <div class="col-sm-2">
                             <label class="label"> <strong>Status: </strong></label>
                         </div>
-                        <div class="col-sm-9">
+                        <div class="col-sm-4">
                             <div>{{ examDetail.Status }} </div>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <label class="label"> <strong>Date: </strong></label>
-                        </div>
-                        <div class="col-sm-6">
-                            <div> {{ examDetail.Date | date: "MMM d, yyyy" }} </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3">
+        
                     <div class="row">
                         <div class="col-sm-3">
+                            <label class="label"> <strong>Date: </strong></label>
+                        </div>
+                        <div class="col-sm-3">
+                            <div> {{ examDetail.Date | date: "MMM d, yyyy" }} </div>
+                        </div>
+                        <div class="col-sm-2">
                             <label class="label"> <strong>Time: </strong></label>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div>{{ examDetail.Time }} </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>Status</label>
-                    <select class="form-control" [(ngModel)]="selectedStatus" (change)="onStatusChange($event.target.value)">
-                      <option > Scheduled </option>
-                      <option > In Progress </option>
-                      <option > Completed </option>
-                      <option > Evaluation Inprogress </option>
-                      <option > Evaluation Completed </option>
-                      <option > Closed </option>
-                    </select>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="mx-auto" style="width: 200px;">
+                                <button type="button" class="btn btn-link" 
+                                                    *ngIf="canDisplayAttendance" 
+                                                    (click)="getStudents()" >
+                                    View Attendance
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="mx-auto" style="width: 200px;">
+                                <button type="button" class="btn btn-link" 
+                                                    *ngIf="canDisplayMarks" 
+                                                    routerLinkActive="active" routerLink="/pages/student-marks/{{examDetail.Id}}/view" >
+                                    View Marks
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="mx-auto" style="width: 200px;">
+                                <button type="button" class="btn btn-primary" *ngIf="examDetail.Status == 'Scheduled'" (click)="updateExamStatus('In Progress', 'ExamStatus')">
+                                    Start Exam
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="mx-auto" style="width: 200px;">
+                                <button type="button" class="btn btn-primary" *ngIf="examDetail.Status == 'In Progress' && examDetail.Attendance == '1'" (click)="updateExamStatus('Completed', 'ExamStatus')">
+                                    Mark as Complate
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="mx-auto" style="width: 200px;">
+                                <button type="button" class="btn btn-primary" *ngIf="examDetail.Status == 'Completed'" (click)="updateExamStatus('Evaluation Inprogress', 'ExamStatus')">
+                                    Start Evaluation
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="mx-auto" style="width: 200px;">
+                                <button type="button" class="btn btn-primary" *ngIf="examDetail.Status == 'Evaluation Inprogress' && examDetail.MarksStatus == null" 
+                                                    routerLinkActive="active" routerLink="/pages/student-marks/{{examDetail.Id}}/new">
+                                    Enter Marks
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="mx-auto" style="width: 200px;">
+                                <button type="button" class="btn btn-primary" *ngIf="examDetail.Status == 'Evaluation Inprogress' && examDetail.MarksStatus == 'Draft'" 
+                                                    routerLinkActive="active" routerLink="/pages/student-marks/{{examDetail.Id}}/edit">
+                                    Edit Marks
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="mx-auto" style="width: 200px;">
+                                <button type="button" class="btn btn-primary" *ngIf="examDetail.Status == 'Evaluation Inprogress' && examDetail.MarksStatus == 'Draft'" 
+                                                                (click)="updateExamStatus('Published', 'ExamMarksStatus')">
+                                    Publish Marks
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="mx-auto" style="width: 200px;">
+                                <button type="button" class="btn btn-primary" *ngIf="examDetail.Status == 'Evaluation Inprogress' && examDetail.MarksStatus == 'Published'" 
+                                                                (click)="updateExamStatus('Evaluation Completed', 'ExamStatus')">
+                                    Complete Evaluation
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="mx-auto" style="width: 200px;">
+                                <button type="button" class="btn btn-primary" *ngIf="examDetail.Status == 'Evaluation Completed'" 
+                                                                (click)="updateExamStatus('Closed', 'ExamStatus')">
+                                    Close Exam
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" (click)="updateStatus()">Save changes</button>
+            <div >
+                <div *ngIf="loadChartSpin">
+                    <app-loader></app-loader>
+                </div>
+                <app-attendance-chart ></app-attendance-chart>
             </div>
         </div>
+
+        <div class="col-sm-6" >
+            <div *ngIf="loadSpinner">
+                <app-loader></app-loader>
+            </div>
+
+            <div >
+                <app-class-attendance-detail [classId]="examDetail.Id" typeOfAttendance="exam"></app-class-attendance-detail>
+            </div>
+            <!-- <div >(click)="enterMarks(examDetail)"
+                <app-student-marks ></app-student-marks>
+            </div> -->
         </div>
     </div>
 </body>

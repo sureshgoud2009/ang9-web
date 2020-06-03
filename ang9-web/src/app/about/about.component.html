@@ -1,9 +1,5 @@
 <!DOCTYPE html>
 <html>
-<!-- <head>
-    <meta charset="UTF-8">
-    <title>Attendance </title>
-</head> -->
 <body>
     <div class="row">
         <div class="col-sm-3">
@@ -17,7 +13,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-5">
             <div class="example-container mat-elevation-z8">
                 <mat-table [dataSource]="dataSource" matSort >
                     
@@ -41,7 +37,18 @@
             </div>
         </div>
         <div class="col-sm-6">
-            <app-class-attendance-detail [classId]="selectedClassId"></app-class-attendance-detail>
+            <div >
+                <div *ngIf="loadChartSpin">
+                    <app-loader></app-loader>
+                </div>
+                <app-attendance-chart ></app-attendance-chart>
+            </div>
+
+            <div >
+                <app-class-attendance-detail [classId]="selectedClassId" typeOfAttendance="class"></app-class-attendance-detail>
+            </div>
+
+            
         </div>
     </div>
 </body>
