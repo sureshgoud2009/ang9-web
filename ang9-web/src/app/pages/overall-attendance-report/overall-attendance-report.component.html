@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Chart </title>
+</head>
+<body>
+
+<div [hidden]="hasAttendance">
+  <app-loader></app-loader>
+</div>
+<div [hidden]="!hasAttendance">
+  <h2 class="header"> Present Semester - Attendance - {{ attendance.PresentPercent}} % </h2>
+  <div class="row">
+    <div class="col-sm-6">
+      <canvas #studentOverallAttendance height="200px"></canvas>
+    </div>
+
+    <div class="col-sm-6" *ngIf="attendance">
+      <div class="row">
+        <div class="col-sm-6">
+          <label class="label" style="color: green;"> <strong>Total Students: </strong></label>
+        </div>
+        <div class="col-sm-6">
+          <div style="color: green;"> {{ attendance.Total }} </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6">
+          <label class="label" style="color: blue;"> <strong>Present: </strong></label>
+        </div>
+        <div class="col-sm-6">
+          <div style="color: blue;"> {{ attendance.Present }} ( {{ attendance.PresentPercent}} %)</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6">
+          <label class="label" style="color: red;"> <strong>Absent: </strong></label>
+        </div>
+        <div class="col-sm-6">
+          <div style="color: red;"> {{ attendance.Absent }}  ( {{ attendance.AbsentPercent}} %)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>

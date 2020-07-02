@@ -1,5 +1,5 @@
-export interface SubmitMarks {
-  ExamId: string;
+export interface TimeTable {
+  TimeTableId: string;
   StudentId: string;
   StudentName: string;
   Marks: number;

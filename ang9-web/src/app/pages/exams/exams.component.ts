@@ -1,13 +1,13 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 
 //Mat table
-import { MatTableModule } from '@angular/material/table';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { PhpService } from 'src/app/services/php.service';
-import { UtilService } from 'src/app/services/util.service';
-import { ExamDetailComponent } from '../exam-detail/exam-detail.component';
+import {MatTableModule} from '@angular/material/table';
+import {MatTableDataSource} from '@angular/material/table';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
+import {PhpService} from 'src/app/services/php.service';
+import {UtilService} from 'src/app/services/util.service';
+import {ExamDetailComponent} from '../exam-detail/exam-detail.component';
 
 interface ExamTimetable {
   ExamId: string;
@@ -52,7 +52,7 @@ interface ExamNames {
 })
 export class ExamsComponent implements OnInit {
 
-  @ViewChild(ExamDetailComponent) child: ExamDetailComponent ; 
+  @ViewChild(ExamDetailComponent) child: ExamDetailComponent;
 
   selectedExamName: string;
   selectedBranch: string;
@@ -82,42 +82,43 @@ export class ExamsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private php: PhpService,
-    private util: UtilService) { }
+              private util: UtilService) {
+  }
 
   ngOnInit(): void {
     this.getExamTypes();
     this.getExamNames();
   }
 
-  getExamTypes(){
+  getExamTypes() {
     this.php.getExamTypes().subscribe(
       (res: any) => {
-          this.examTypes = res;
+        this.examTypes = res;
       }, error => {
       }
     );
   }
 
-  getExamNames(){
+  getExamNames() {
     this.examNames = [];
     this.php.getExamNames().subscribe(
       (res: any) => {
-          this.examNames = res;
-          this.selectedExamName = this.examNames[0].Id;
-          this.getSchemes();
+        this.examNames = res;
+        this.selectedExamName = this.examNames[0].Id;
+        this.getSchemes();
       }, error => {
         this.isBtnEnabled = this.enableSearchButton();
       }
     );
   }
 
-  getSchemes(){
+  getSchemes() {
     this.php.getUniqueSchemas(this.selectedExamName).subscribe(
       (res: any) => {
-          this.schemes = res;
-          this.selectedScheme = this.schemes[0].Year;
-          this.getExamBranches();
-          this.getSchemeSemesters(this.selectedScheme);
+        this.schemes = res;
+        this.selectedScheme = this.schemes[0].Year;
+        this.getExamBranches();
+        this.getSchemeSemesters(this.selectedScheme);
       }, error => {
         this.errorMsg = this.util.handleErrors(error.split(':')[1], 'No Schemes available');
         this.isBtnEnabled = this.enableSearchButton();
@@ -125,14 +126,14 @@ export class ExamsComponent implements OnInit {
       }
     );
   }
-  
-  getExamBranches(){
-    if(this.util.isNotNull(this.selectedExamName) && this.util.isNotNull(this.selectedScheme)) {
+
+  getExamBranches() {
+    if (this.util.isNotNull(this.selectedExamName) && this.util.isNotNull(this.selectedScheme)) {
       this.php.getExamBranches(this.selectedExamName, this.selectedScheme).subscribe(
         (res: any) => {
-            this.examBranches = res;
-            this.selectedBranch = this.examBranches[0].Branch;
-            this.isBtnEnabled = this.enableSearchButton();
+          this.examBranches = res;
+          this.selectedBranch = this.examBranches[0].Branch;
+          this.isBtnEnabled = this.enableSearchButton();
         }, error => {
           this.isBtnEnabled = this.enableSearchButton();
         }
@@ -140,14 +141,14 @@ export class ExamsComponent implements OnInit {
     }
   }
 
-  getSchemeSemesters(scheme: string){
-    if(this.util.isNotNull(scheme)) {
+  getSchemeSemesters(scheme: string) {
+    if (this.util.isNotNull(scheme)) {
       this.php.getSemesters(scheme).subscribe(
         (res: any) => {
-            this.semesters = res;
-            this.selectedSemester = this.semesters[0].Semester;
-            this.isBtnEnabled = this.enableSearchButton();
-            this.loadSpinner = false;
+          this.semesters = res;
+          this.selectedSemester = this.semesters[0].Semester;
+          this.isBtnEnabled = this.enableSearchButton();
+          this.loadSpinner = false;
         }, error => {
           this.isBtnEnabled = this.enableSearchButton();
           this.loadSpinner = false;
@@ -208,26 +209,25 @@ export class ExamsComponent implements OnInit {
   }
 
   enableSearchButton() {
-    if(this.util.isNotNull(this.selectedExamName) && this.util.isNotNull(this.selectedScheme) && this.util.isNotNull(this.selectedBranch) && this.util.isNotNull(this.selectedSemester)){
-      return true;
-    }
-    return false;
+    return this.util.isNotNull(this.selectedExamName) && this.util.isNotNull(this.selectedScheme) &&
+      this.util.isNotNull(this.selectedBranch) && this.util.isNotNull(this.selectedSemester);
   }
 
-  getExamTimeTable(){
+  getExamTimeTable() {
     this.loadSpinner = true;
     this.hasExamData = false;
     this.isSearchClicked = false;
     this.disableDetailView = true;
 
-    if(this.util.isNotNull(this.selectedExamName) && this.util.isNotNull(this.selectedScheme) && this.util.isNotNull(this.selectedBranch) && this.util.isNotNull(this.selectedSemester)) {
+    if (this.util.isNotNull(this.selectedExamName) && this.util.isNotNull(this.selectedScheme) &&
+            this.util.isNotNull(this.selectedBranch) && this.util.isNotNull(this.selectedSemester)) {
       this.php.getExamTimeTable(this.selectedScheme, this.selectedBranch, this.selectedSemester, this.selectedExamName).subscribe(
         (res: any) => {
-            this.examTimeTable = new MatTableDataSource(res);
-            this.examTimeTable.paginator = this.paginator;
-            this.hasExamData = true;
-            this.loadSpinner = false;
-            this.isSearchClicked = true;
+          this.examTimeTable = new MatTableDataSource(res);
+          this.examTimeTable.paginator = this.paginator;
+          this.hasExamData = true;
+          this.loadSpinner = false;
+          this.isSearchClicked = true;
 
         }, error => {
           this.hasExamData = false;
@@ -238,7 +238,7 @@ export class ExamsComponent implements OnInit {
     }
   }
 
-  onSelect(row){
+  onSelect(row) {
     this.detailViewSpin = true;
     this.disableDetailView = true;
 

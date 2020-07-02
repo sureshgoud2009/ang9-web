@@ -33,7 +33,7 @@
                             <div>{{ examDetail.Status }} </div>
                         </div>
                     </div>
-        
+
                     <div class="row">
                         <div class="col-sm-3">
                             <label class="label"> <strong>Date: </strong></label>
@@ -52,8 +52,8 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="mx-auto" style="width: 200px;">
-                                <button type="button" class="btn btn-link" 
-                                                    *ngIf="canDisplayAttendance" 
+                                <button type="button" class="btn btn-link"
+                                                    *ngIf="canDisplayAttendance"
                                                     (click)="getStudents()" >
                                     View Attendance
                                 </button>
@@ -62,8 +62,8 @@
 
                         <div class="col-sm-6">
                             <div class="mx-auto" style="width: 200px;">
-                                <button type="button" class="btn btn-link" 
-                                                    *ngIf="canDisplayMarks" 
+                                <button type="button" class="btn btn-link"
+                                                    *ngIf="canDisplayMarks"
                                                     routerLinkActive="active" routerLink="/pages/student-marks/{{examDetail.Id}}/view" >
                                     View Marks
                                 </button>
@@ -104,7 +104,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="mx-auto" style="width: 200px;">
-                                <button type="button" class="btn btn-primary" *ngIf="examDetail.Status == 'Evaluation Inprogress' && examDetail.MarksStatus == null" 
+                                <button type="button" class="btn btn-primary" *ngIf="examDetail.Status == 'Evaluation Inprogress' && examDetail.MarksStatus == null"
                                                     routerLinkActive="active" routerLink="/pages/student-marks/{{examDetail.Id}}/new">
                                     Enter Marks
                                 </button>
@@ -115,7 +115,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="mx-auto" style="width: 200px;">
-                                <button type="button" class="btn btn-primary" *ngIf="examDetail.Status == 'Evaluation Inprogress' && examDetail.MarksStatus == 'Draft'" 
+                                <button type="button" class="btn btn-primary" *ngIf="examDetail.Status == 'Evaluation Inprogress' && examDetail.MarksStatus == 'Draft'"
                                                     routerLinkActive="active" routerLink="/pages/student-marks/{{examDetail.Id}}/edit">
                                     Edit Marks
                                 </button>
@@ -124,7 +124,7 @@
 
                         <div class="col-sm-6">
                             <div class="mx-auto" style="width: 200px;">
-                                <button type="button" class="btn btn-primary" *ngIf="examDetail.Status == 'Evaluation Inprogress' && examDetail.MarksStatus == 'Draft'" 
+                                <button type="button" class="btn btn-primary" *ngIf="examDetail.Status == 'Evaluation Inprogress' && examDetail.MarksStatus == 'Draft'"
                                                                 (click)="updateExamStatus('Published', 'ExamMarksStatus')">
                                     Publish Marks
                                 </button>
@@ -135,7 +135,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="mx-auto" style="width: 200px;">
-                                <button type="button" class="btn btn-primary" *ngIf="examDetail.Status == 'Evaluation Inprogress' && examDetail.MarksStatus == 'Published'" 
+                                <button type="button" class="btn btn-primary" *ngIf="examDetail.Status == 'Evaluation Inprogress' && examDetail.MarksStatus == 'Published'"
                                                                 (click)="updateExamStatus('Evaluation Completed', 'ExamStatus')">
                                     Complete Evaluation
                                 </button>
@@ -146,7 +146,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="mx-auto" style="width: 200px;">
-                                <button type="button" class="btn btn-primary" *ngIf="examDetail.Status == 'Evaluation Completed'" 
+                                <button type="button" class="btn btn-primary" *ngIf="examDetail.Status == 'Evaluation Completed'"
                                                                 (click)="updateExamStatus('Closed', 'ExamStatus')">
                                     Close Exam
                                 </button>
@@ -159,7 +159,8 @@
                 <div *ngIf="loadChartSpin">
                     <app-loader></app-loader>
                 </div>
-                <app-attendance-chart ></app-attendance-chart>
+              <app-attendance-chart></app-attendance-chart>
+<!--                <app-attendance-chart attendanceId="{{examDetail.Id}}" type="exam"></app-attendance-chart>-->
             </div>
         </div>
 

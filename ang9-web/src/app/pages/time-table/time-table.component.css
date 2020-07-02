@@ -1,0 +1,72 @@
+/*#col0,#col1,#col2, #col3, #col4, #col5, #col6{*/
+.ttData {
+  border: 1px solid black;
+  width: 120px;
+  height: 50px;
+  text-align: center;
+  margin: 15px;
+  padding: 15px;
+  color: black;
+}
+
+.subjText {
+
+}
+
+#breakCol {
+  border: 1px solid black;
+  width: 870px;
+  height: 50px;
+  text-align: center;
+  margin: 15px;
+  padding: 15px;
+  color: black;
+  background-color: tan;
+}
+
+.dropElement {
+  border: 1px solid black;
+  width: 1020px;
+  height: 50px;
+  background-color: grey;
+  text-align: center;
+  padding-top: 15px;
+  color: white;
+}
+
+.breakText {
+  color: black;
+  font-size: large;
+  font-family: "Times New Roman";
+}
+
+.headerCol {
+  border: 1px solid black;
+  width: 120px;
+  height: 50px;
+  text-align: center;
+  margin: 15px;
+  padding: 15px;
+  background-color: lightgrey;
+  color: black;
+}
+
+.datTimeCol {
+  border: 1px solid black;
+  width: 120px;
+  height: 50px;
+  text-align: center;
+  margin: 15px;
+  padding: 15px;
+  background-color: lightblue;
+  color: black;
+}
+
+/*#drag1, #drag2, #drag3, #drag4, #drag5 , #drag6{*/
+.subj {
+  max-height: 60px;
+  max-width: 100px;
+  text-align: center;
+  color: black;
+  background-color: silver;
+}

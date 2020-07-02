@@ -1,5 +1,5 @@
-import { Injectable, ElementRef } from '@angular/core';
-import { Chart } from 'chart.js';
+import {Injectable, ElementRef} from '@angular/core';
+import {Chart} from 'chart.js';
 
 @Injectable({
   providedIn: 'root'
@@ -8,23 +8,19 @@ export class DashboardService {
 
   public pieChart: Chart;
 
-  constructor() { }
+  constructor() {}
 
   generateChart(pieCanvas: ElementRef, dataValues: number[], labelValues: string[], typeOfChart: string, label: string) {
-
-    let colors: string[] = [];
-    colors = this.generateColors(dataValues.length);
-
-    var data = [
+    const data = [
       {
-        label: label,
+        label,
         data: dataValues,
-        backgroundColor: colors,
-        hoverBackgroundColor: colors
+        backgroundColor: typeOfChart === 'line' ? '#3486eb' : this.generateColors(dataValues.length),
+        hoverBackgroundColor: this.generateColors(dataValues.length)
       }
     ];
 
-    var options = {
+    const chartOptions = {
       responsive: true,
       tooltips: {
         enabled: true
@@ -39,20 +35,20 @@ export class DashboardService {
         ]
       }
     };
-    
+
     return new Chart(pieCanvas.nativeElement, {
       type: typeOfChart,
       data: {
         labels: labelValues,
         datasets: data
       },
-      options: options
+      options: chartOptions
     });
   }
 
   removeData(chart) {
     chart.data.datasets.forEach((dataset) => {
-        dataset.data.pop();
+      dataset.data.pop();
     });
     chart.update();
   }
@@ -124,16 +120,16 @@ export class DashboardService {
   // }
 
   generateColors(countOfColors) {
-    let colors = ["#0066ff", 
-                  "#ff0000",
-                  "#ff9900",
-                  "#6600ff",
-                  "#009900",
-                  "#003366"]
-                  ;
+    let colors = ['#0066ff',
+      '#ff0000',
+      '#ff9900',
+      '#6600ff',
+      '#009900',
+      '#003366']
+    ;
 
     let selectedColors: string[] = [];
-    for(let i = 0; i < countOfColors; i++ ){
+    for (let i = 0; i < countOfColors; i++) {
       selectedColors.push(colors[i]);
     }
 

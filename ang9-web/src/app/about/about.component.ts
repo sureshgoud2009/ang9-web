@@ -1,26 +1,26 @@
-import { Component, OnInit, ViewChild, ViewChildren, QueryList, ElementRef } from '@angular/core';
+import {Component, OnInit, ViewChild, ViewChildren, QueryList} from '@angular/core';
 
-//Mat table
-import { MatTableModule } from '@angular/material/table';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+// Mat table
+import {MatTableModule} from '@angular/material/table';
+import {MatTableDataSource} from '@angular/material/table';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
 
-import { PhpService } from '../services/php.service';
-import { DashboardService } from '../services/dashboard.service';
-import { UtilService } from './../services/util.service';
-import { ClassAttendanceDetailComponent } from '../class-attendance-detail/class-attendance-detail.component';
-import { AttendanceChartComponent } from '../pages/attendance-chart/attendance-chart.component';
+import {PhpService} from '../services/php.service';
+import {DashboardService} from '../services/dashboard.service';
+import {UtilService} from '../services/util.service';
+import {ClassAttendanceDetailComponent} from '../class-attendance-detail/class-attendance-detail.component';
+import {AttendanceChartComponent} from '../pages/attendance-chart/attendance-chart.component';
 
 export interface StaffClasses {
-  ClassId :    string;
-  StaffId :    string;
-  SubjectId:   string;
+  ClassId: string;
+  StaffId: string;
+  SubjectId: string;
   CreatedDate: string;
-  Size:        string;
+  Size: string;
   UniqueDates: string[];
-  HeaderDate:  string;
-  Subject:     string;
+  HeaderDate: string;
+  Subject: string;
 }
 
 @Component({
@@ -35,18 +35,21 @@ export class AboutComponent implements OnInit {
   displayedColumns = ['date', 'subject'];
   myClasses: StaffClasses[] = [];
   dataSource: MatTableDataSource<StaffClasses>;
-  selectedClassId: string;
-  loadChartSpin: boolean = false;
+  selectedClassId = '0';
+  loadChartSpin = false;
+  selectedRow;
+  isRowClicked = false;
   percents: number[] = [];
 
-  @ViewChild(ClassAttendanceDetailComponent ) child: ClassAttendanceDetailComponent ; 
-  @ViewChild(AttendanceChartComponent )  attendanceChart: AttendanceChartComponent ; 
+  @ViewChild(ClassAttendanceDetailComponent) child: ClassAttendanceDetailComponent;
+  @ViewChild(AttendanceChartComponent) attendanceChart: AttendanceChartComponent;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
 
   constructor(private php: PhpService,
-    private dashboard: DashboardService,
-    private util: UtilService) {}
+              private dashboard: DashboardService,
+              private util: UtilService) {
+  }
 
   ngOnInit(): void {
     this.userId = localStorage.getItem('userId');
@@ -56,9 +59,10 @@ export class AboutComponent implements OnInit {
   getClasses() {
     this.php.getClasses(this.userId).subscribe(
       (res: StaffClasses[]) => {
-        if(parseInt(res[0].Size) > 0){
+        // tslint:disable-next-line:radix
+        if (parseInt(res[0].Size) > 0) {
           this.myClasses = res;
-       
+
           this.dataSource = new MatTableDataSource(this.myClasses);
           this.dataSource.paginator = this.paginator.toArray()[0];
           this.dataSource.sort = this.sort;
@@ -70,15 +74,16 @@ export class AboutComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  onSelect(row){
+  onSelect(row) {
     this.loadChartSpin = true;
     this.selectedClassId = row.ClassId;
-    this.child.displayAttendanceReport(row.ClassId);
-
-    this.attendanceChart.getAttendanceChart(row.ClassId, 'class').then( () => {
-      this.loadChartSpin = false;
+    this.attendanceChart.getAttendanceChart(row.ClassId, 'class').then(res => {
+      console.log('Chart Loaded and resp is: ', res);
+      if (res) {
+        this.loadChartSpin = false;
+        this.isRowClicked = true;
+      }
     });
+    this.child.displayAttendanceReport(row.ClassId);
   }
-
-  
 }

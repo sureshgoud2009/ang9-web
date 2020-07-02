@@ -1,14 +1,14 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
-import { DashboardService } from 'src/app/services/dashboard.service';
-import { PhpService } from 'src/app/services/php.service';
+import {Component, ViewChild, ElementRef} from '@angular/core';
+import {PhpService} from 'src/app/services/php.service';
+import {UtilService} from '../../services/util.service';
 
 interface ClassAttendance {
-  Date:            string;
-  presentCount:    string;
-  absentCount:     string;
-  presentPercent:  string;
-  absentPercent:   string;
-  TotalStudents:   string;
+  Date: string;
+  presentCount: string;
+  absentCount: string;
+  presentPercent: string;
+  absentPercent: string;
+  TotalStudents: string;
 }
 
 @Component({
@@ -18,63 +18,52 @@ interface ClassAttendance {
 })
 export class AttendanceChartComponent {
 
-  @ViewChild("classAttendanceCanvas", {static: true}) classAttendanceCanvas: ElementRef;
+  @ViewChild('classAttendanceCanvas', {static: true}) classAttendanceCanvas: ElementRef;
   attendanceChart: Chart;
   classPercent = {} as ClassAttendance;
-  percentages: number[] = [];
-  hasAttendanceChart: Boolean ;
+  hasAttendanceChart;
 
   constructor(
     private php: PhpService,
-    private dashboard: DashboardService) { }
+    private util: UtilService
+  ) {
+  }
 
-  getAttendanceChart(attendanceId: string, type: string) {
-    this.percentages = [];
+  getAttendanceChart(attendanceId, type) {
     this.classPercent = null;
-    
-    const promise = new Promise((resolve, reject) => {
+
+    let promise: Promise<unknown>;
+    promise = new Promise((resolve, reject) => {
       this.php.getClassAttendance(attendanceId, type).subscribe(
         (res: ClassAttendance) => {
-          // if(res){
-            this.classPercent = res;
-            this.hasAttendanceChart = true;
-            // Parse Attendance
-            this.parsePercentages();
-            this.generateAttendanceChart();
+          this.classPercent = res;
+          this.hasAttendanceChart = true;
 
-            resolve();
-          // }else{
-          //   this.removeChartData();
-          //   this.hasAttendanceChart = false;
-          //   this.attendanceChart = undefined;
-          // }
+          // Generate Attendance Chart
+          this.generateAttendanceChart();
+
+          resolve(true);
         }, error => {
-          this.removeChartData();
+          this.util.removeChartChart(this.attendanceChart);
           this.hasAttendanceChart = false;
           this.attendanceChart = undefined;
 
           reject(error);
         });
-      });
-      return promise;
-  }
-
-  parsePercentages() {
-    this.percentages.push(parseInt(this.classPercent.presentPercent));
-    this.percentages.push(parseInt(this.classPercent.absentPercent));
+    });
+    return promise;
   }
 
   generateAttendanceChart() {
-    if( this.attendanceChart !== undefined ){
-      this.removeChartData();
+    if (this.attendanceChart !== undefined) {
+      this.util.removeChartChart(this.attendanceChart);
     }
-    this.attendanceChart = this.dashboard.generateChart(this.classAttendanceCanvas, this.percentages, ["Present", "Absent"], "pie", "overall attendance");
-    
-  }
-
-  removeChartData() {
-    this.dashboard.removeData(this.attendanceChart);
-    this.dashboard.removeData(this.attendanceChart);
+    this.attendanceChart = this.util.generateChart(this.classAttendanceCanvas,
+      [parseInt(this.classPercent.presentPercent), parseInt(this.classPercent.absentPercent)],
+      ['Present', 'Absent'],
+      'pie',
+      'overall attendance'
+    );
   }
 
 }

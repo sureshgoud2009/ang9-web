@@ -1,0 +1,116 @@
+<div class="container">
+
+  <div class="row" *ngIf="loadSpinner">
+    <app-loader></app-loader>
+  </div>
+
+  <div class="row" *ngIf="!loadSpinner">
+
+    <div class="col-sm-2">
+      <div class="form-group">
+        <label for="scheme">Scheme</label>
+        <select class="form-control" (change)="onSchemeChange($event)" [(ngModel)]="selectedScheme"
+                id="scheme">
+          <option *ngFor="let sch of schemes" value="{{ sch.Year }}"> {{ sch.Year }} </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-sm-2">
+      <div class="form-group">
+        <label for="branch">Branch</label>
+        <select class="form-control" [(ngModel)]="selectedBranch" (change)="onBranchChange($event)"
+                id="branch">
+          <option *ngFor="let branch of branches" value="{{ branch.Branch }}"> {{ branch.Branch }} </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-sm-1">
+      <div class="form-group">
+        <label for="semester">Semester</label>
+        <select class="form-control" [(ngModel)]="selectedSemester" (change)="onSemesterChange($event)"
+                id="semester">
+          <option *ngFor="let sem of semesters" value="{{ sem.Semester }}"> {{ sem.Semester }} </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-sm-1">
+      <div class="form-group" style="padding-top: 30px;">
+        <button type="button" class="btn btn-primary" [disabled]="!isBtnEnabled" (click)="search();">
+          Search
+        </button>
+      </div>
+    </div>
+
+    <div class="col-sm-2">
+    </div>
+    <div class="col-sm-4">
+      <div class="form-group" style="padding-top: 30px;">
+        <button type="button" class="btn btn-primary btn-block" (click)="submitTimeTable();" [disabled]="subjects.length == 0">
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="getRecordLoader">
+    <app-loader></app-loader>
+  </div>
+
+  <div class="row" *ngIf="errorMsg && subjects.length == 0">
+    {{ errorMsg }}
+  </div>
+
+  <div *ngIf="subjects.length > 0">
+    <div class="card-columns" style="padding: 40px;">
+      <div *ngFor="let subj of sortBy('Id')">
+        <div class="card bg-warning subj" draggable="true" (dragstart)="dragAndCopy($event)" id="drag{{subj.Id}}">
+          {{ subj.Subject }}
+        </div>
+      </div>
+    </div>
+
+    <div class="row" id="rowId">
+      <div class="col-sm" class="datTimeCol">
+        Day / Time
+      </div>
+      <div *ngFor="let day of workingDays" class="headerCol">
+        {{ day.Name }}
+      </div>
+    </div>
+
+    <div class="row" *ngFor="let classTime of classTimings">
+      <div class="col-sm" class="headerCol">
+        {{ classTime.ClassFrom }} - {{ classTime.ClassTo }}
+      </div>
+
+      <div *ngFor="let day of workingDays">
+        <div *ngIf="classTime.PeriodNumber">
+
+          <div class="col-sm" class="ttData" draggable="true" (dragstart)="drag($event)"
+               (drop)="drop($event)" (dragover)="allowDrop($event)" id="{{classTime.Id}}-{{day.Name}}" >
+
+<!--            <div class="card bg-warning subj" *ngIf="timeTableMap.get(classTime.Id + '-' +day.Name)">-->
+<!--              {{ timeTableMap.get(classTime.Id + '-' +day.Name)}}-->
+<!--            </div>-->
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="!classTime.PeriodNumber">
+        <div class="col-sm" id="breakCol">
+          <p class="breakText">Break</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="dropElement" id="dropDiv2" (drop)="deleteElement($event)" (dragover)="allowDrop($event)">
+      -------------------------------------------
+      DROP HERE TO DELETE
+      -------------------------------------------
+    </div>
+  </div>
+
+</div>
