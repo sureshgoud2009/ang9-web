@@ -1,0 +1,43 @@
+<div [hidden]="student">
+  <app-loader></app-loader>
+</div>
+
+<div [hidden]="!student">
+  <div class="row">
+    <div class="col-sm-2">
+      <img src="../../../assets/images/MyPic.png" alt="Avatar">
+    </div>
+
+    <div class="col-sm-10">
+      <div class="card">
+        <div class="card-body">
+          <div class="nameClass"> {{student.Name}}
+          </div>
+          <div class="branch"> {{student.Branch}} </div>
+          <div class="branch"> {{util.getSemesterName(student.Semester)}} </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <app-overall-attendance-report [studentId]="studentId"></app-overall-attendance-report>
+    </div>
+
+    <div class="col-sm-6">
+      <app-current-semester-marks-report [studentId]="studentId" [semester]="student.Semester"></app-current-semester-marks-report>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <app-previous-semester-marks-report [studentId]="studentId" ></app-previous-semester-marks-report>
+    </div>
+
+    <div class="col-sm-6">
+      <app-previous-semester-marks-report [studentId]="studentId" ></app-previous-semester-marks-report>
+    </div>
+  </div>
+
+</div>

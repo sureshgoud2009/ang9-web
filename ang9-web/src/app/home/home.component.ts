@@ -38,9 +38,7 @@ export class HomeComponent implements OnInit {
     public authService: AuthenticationService,
     private router: Router,
     private win: WindowService
-  ) { 
-    
-  }
+  ) {}
 
   ngOnInit() {
     this.authService.getLoggedInUser().then(result => {
@@ -85,7 +83,7 @@ export class HomeComponent implements OnInit {
           this.pressedSignin = false;
         }
       },
-      (err) => { 
+      (err) => {
         this.error = err
         this.pressedSignin = false;
       }
@@ -98,7 +96,7 @@ export class HomeComponent implements OnInit {
           (res: User) => {
             if(res != null){
               this.user = res;
-              
+
             }else{
 
             }
@@ -133,8 +131,8 @@ export class HomeComponent implements OnInit {
   //     if(result.additionalUserInfo.isNewUser){
   //       console.log('New user: ', this.user.Gender);
   //       // Create User
-  //       this.authService.createUser(result.user.uid, this.user.Mobile, result.user.metadata.creationTime, 
-  //                                   result.user.metadata.lastSignInTime, this.user.Name, this.user.Gender, 
+  //       this.authService.createUser(result.user.uid, this.user.Mobile, result.user.metadata.creationTime,
+  //                                   result.user.metadata.lastSignInTime, this.user.Name, this.user.Gender,
   //                                   this.userId, this.user.Uid);
   //     }else{
   //       console.log('Existing User: ', result.user);

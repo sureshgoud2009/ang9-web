@@ -16,19 +16,19 @@
         <div class="col-sm-5">
             <div class="example-container mat-elevation-z8">
                 <mat-table [dataSource]="dataSource" matSort >
-                    
+
                     <ng-container matColumnDef="date">
                         <mat-header-cell *matHeaderCellDef mat-sort-header> Date / Time </mat-header-cell>
-                        <mat-cell *matCellDef="let row" > 
-                            <button type="button" class="btn btn-link"> {{row.CreatedDate | date: "MMM d, yy" }} @ {{row.CreatedDate | date: "h:mm a"}} </button> 
+                        <mat-cell *matCellDef="let row" >
+                            <button type="button" class="btn btn-link"> {{row.CreatedDate | date: "MMM d, yy" }} @ {{row.CreatedDate | date: "h:mm a"}} </button>
                         </mat-cell>
                     </ng-container>
-    
+
                     <ng-container matColumnDef="subject">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Subject </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.Subject}} </mat-cell>
                     </ng-container>
-                
+
                     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onSelect(row)">
                     </mat-row>
@@ -37,18 +37,15 @@
             </div>
         </div>
         <div class="col-sm-6">
-            <div >
-                <div *ngIf="loadChartSpin">
-                    <app-loader></app-loader>
-                </div>
-                <app-attendance-chart ></app-attendance-chart>
-            </div>
-
-            <div >
-                <app-class-attendance-detail [classId]="selectedClassId" typeOfAttendance="class"></app-class-attendance-detail>
-            </div>
-
-            
+          <div *ngIf="loadChartSpin">
+            <app-loader></app-loader>
+          </div>
+          <div [hidden]="!isRowClicked">
+              <app-attendance-chart></app-attendance-chart>
+          </div>
+          <div [hidden]="!isRowClicked">
+              <app-class-attendance-detail [classId]="selectedClassId" typeOfAttendance="class"></app-class-attendance-detail>
+          </div>
         </div>
     </div>
 </body>

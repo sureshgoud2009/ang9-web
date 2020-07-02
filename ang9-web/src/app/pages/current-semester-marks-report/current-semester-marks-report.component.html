@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Chart </title>
+</head>
+<body>
+
+<div [hidden]="isChecked">
+  <app-loader></app-loader>
+</div>
+<div [hidden]="!marks">
+  <h2 class="header"> Present Semester Marks Report </h2>
+      <canvas #semesterWiseMarks height="100px"></canvas>
+</div>
+</body>
